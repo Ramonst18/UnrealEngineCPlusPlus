@@ -4,7 +4,9 @@
 #include "PlayerAnimInstance.h"
 #include "PlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
+/*
 void UPlayerAnimInstance::UpdateAnimationProperties(float Deltatime)
 {
 	//ESTE ESTÁ OBSOLETO
@@ -30,13 +32,14 @@ void UPlayerAnimInstance::UpdateAnimationProperties(float Deltatime)
 		}else
 		{
 			bIsAccelerating = false;
-		} */
+		} 
 		//Esta manera es igual a la de arriba, pero corta d:, recomendada en algunos casos
 		bIsAccelerating = (PlayerCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.0);
 
 		
 	}
 }
+*/
 
 void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -66,6 +69,14 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		} */
 		//Esta manera es igual a la de arriba, pero corta d:, recomendada en algunos casos
 		bIsAccelerating = (PlayerCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.0);
+
+		//variable de rotacion, nos da la animacion de rotacion, obtenemos la rotacion directamente de nuestro Pawn
+		FRotator AimRotation = PlayerCharacter->GetBaseAimRotation();
+		//variable para la Rotacion del movimiento del personaje, nos dará la rotacion a partir de la velocidad del personaje
+		FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(PlayerCharacter->GetVelocity());
+
+		//Obtendremos una rotacion a partir de las dos variables que les pasemos, nos devolverá un rotator, obtendremos el eje z con .Yaw
+		MovementOffSetYaw = UKismetMathLibrary::NormalizedDeltaRotator(AimRotation, MovementRotation).Yaw;
 
 		
 	}
