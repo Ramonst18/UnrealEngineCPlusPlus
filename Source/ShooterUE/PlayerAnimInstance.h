@@ -19,7 +19,10 @@ public:
 	//Funciones
 	//Indicamos que la funcion de abajo puede ser llamada como un nodo dentro de los Blueprint
 	UFUNCTION(BlueprintCallable)	 
-	void UpdateAnimationProperties(float Deltatime);
+	void UpdateAnimationProperties(float Deltatime);	//FUNCION OBSOLETA, YA NO EXISTE, SE USA LA QUE ESTA ABAJO
+
+	UFUNCTION(BlueprintCallable)
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 	//Con virtual estamos diciendo que vamos a sobreescribir una funcion y a lo ultimo un override
 	virtual void NativeInitializeAnimation() override;
