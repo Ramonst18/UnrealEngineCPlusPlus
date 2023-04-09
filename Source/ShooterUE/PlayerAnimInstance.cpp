@@ -78,7 +78,12 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		//Obtendremos una rotacion a partir de las dos variables que les pasemos, nos devolverá un rotator, obtendremos el eje z con .Yaw
 		MovementOffSetYaw = UKismetMathLibrary::NormalizedDeltaRotator(AimRotation, MovementRotation).Yaw;
 
-		
+		//Comprobamos si se esta moviendo
+		if (PlayerCharacter->GetVelocity().Size()>0)
+		{
+			//guardamos el ultimo movimiento del personaje
+			LastMovementOffSetYaw = MovementOffSetYaw;
+		}
 	}
 }
 

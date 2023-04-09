@@ -46,4 +46,6 @@ private:
 	bool bIsAccelerating;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement,meta = (AllowPrivateAccess = "true"))
 	float MovementOffSetYaw;	//Yaw, referencia al eje Z
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement,meta = (AllowPrivateAccess = "true"))
+	float LastMovementOffSetYaw;
 };
