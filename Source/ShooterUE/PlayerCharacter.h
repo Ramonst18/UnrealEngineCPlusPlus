@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Sound/SoundCue.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -24,6 +25,14 @@ private:
 	float BaseTurnRate;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess = "true"))
 	float BaseLookUpRate;
+
+	//Variables del disparo
+	//EditAnywhere se pone al inicio para que nosotros podramos modificarlo desde unreal
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Sound, meta=(AllowPrivateAccess = "true"))
+	USoundCue* FireSound;	//Variable de sonido
+	//El animation Montage o AnimMontage, nos sirve para poder ejecutar multiples animaciones
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Animation, meta=(AllowPrivateAccess = "true"))
+	UAnimMontage* FireAnimMontage;	//Variable de animacion
 	
 //Si no indicamos si es publica, protected o privada la funcion, por defecto sera privada
 	
@@ -42,6 +51,10 @@ protected:
 	//Funciones del movimiento de la camara
 	void TurnAtRate(float Rate);
 	void LookAtRate(float Rate);
+
+	//Funciones de acciones
+	//Funcion de disparo
+	void Fire();
 
 public:	
 	// Called every frame

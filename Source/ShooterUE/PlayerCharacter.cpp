@@ -5,6 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -100,6 +101,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	//BindAction espera: El nombre del actionMaping, en que momento se ejecutará(Cuando se presione, se suelte u otro), que clase lo hara y despues la funcion a ejecutar
 	PlayerInputComponent->BindAction("Jump",IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump",IE_Released, this, &ACharacter::StopJumping);
+
+	//DISPARO DEL PERSONAJE
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::Fire);	//Click Dispara
 }
 
 //FUNCIONES
@@ -154,4 +158,28 @@ void APlayerCharacter::LookAtRate(float Rate)
 	/*MOVIMIENTO DE LA CAMARA DE FORMA VERTICAL*/
 	
 	AddControllerPitchInput(Rate*BaseLookUpRate*GetWorld()->GetDeltaSeconds());
+}
+
+void APlayerCharacter::Fire()
+{
+	//SONIDO
+	//Comprobamos que existe el sonido de disparo
+	if (FireSound)
+	{
+		//UGameplayStatics Nos permite obtener elementos de nuestro programa o ejecutar cosas
+		//En este caso queremos ejecutar un sonido
+		UGameplayStatics::PlaySound2D(this, FireSound);
+	}
+	
+	//Animacion
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Del mesh obtenemos el AnimINstance
+	//Verificamos que tenemos el AnimINstance y el FireAnimMontage
+	if (AnimInstance && FireAnimMontage)
+	{
+		//Ejecutamos un AnimMontage
+		AnimInstance->Montage_Play(FireAnimMontage);
+		//Del Montage nos iremos a la seccion StartFire y se ejecutara a partir de ahi
+		AnimInstance->Montage_JumpToSection(FName("StartFire"));
+	}
+	
 }
