@@ -6,6 +6,7 @@
 #include "ShooterUEGameModeBase.h"
 
 #include "PlayerCharacter.h"
+#include "ShooterHUD.h"
 
 //Constructor del archivo
 AShooterUEGameModeBase::AShooterUEGameModeBase()
@@ -27,5 +28,8 @@ AShooterUEGameModeBase::AShooterUEGameModeBase()
 		//declaramos el DefautlPawnClass
 		DefaultPawnClass = PlayerCharacterBP.Class;
 	}
+
+	//ASIGNAMOS LA CLASE HUD
+	HUDClass = AShooterHUD::StaticClass();
 	
 }
