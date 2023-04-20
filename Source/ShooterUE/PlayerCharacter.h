@@ -33,7 +33,8 @@ private:
 	//El animation Montage o AnimMontage, nos sirve para poder ejecutar multiples animaciones
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Animation, meta=(AllowPrivateAccess = "true"))
 	UAnimMontage* FireAnimMontage;	//Variable de animacion
-	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=FX, meta=(AllowPrivateAccess = "true"))
+	UParticleSystem* ImpactParticles;
 //Si no indicamos si es publica, protected o privada la funcion, por defecto sera privada
 	
 public:
@@ -55,6 +56,9 @@ protected:
 	//Funciones de acciones
 	//Funcion de disparo
 	void Fire();
+
+private:
+	void FireLineCast(FName SocketName);
 
 public:	
 	// Called every frame

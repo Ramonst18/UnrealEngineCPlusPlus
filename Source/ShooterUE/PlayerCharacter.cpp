@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -181,5 +182,44 @@ void APlayerCharacter::Fire()
 		//Del Montage nos iremos a la seccion StartFire y se ejecutara a partir de ahi
 		AnimInstance->Montage_JumpToSection(FName("StartFire"));
 	}
-	
+
+	//Disparos
+	FireLineCast("Fire_SocketL");
+	FireLineCast("Fire_SocketR");
+}
+
+void APlayerCharacter::FireLineCast(FName SocketName)
+{
+	//Obtenemos los sockets
+	const USkeletalMeshSocket* Fire_Socket = GetMesh()->GetSocketByName(SocketName);
+	//Comprobamos que existe el socket
+	if (Fire_Socket)
+	{
+		//obtenemos el transform
+		const FTransform Fire_SocketTransform = Fire_Socket->GetSocketTransform(GetMesh());	//Lo obtenemos del esqueleto del personaje
+
+		FHitResult FireHit;	//Guardará la informacion si nuestro disparo impacta con algo
+		const FVector Start = Fire_SocketTransform.GetLocation();	//Obtenemos la posicion de inicio
+		const FQuat Rotation = Fire_SocketTransform.GetRotation();	//Obtenemos la rotacion
+		const FVector RotationAxis = Rotation.GetAxisX();	//Obtenemos la direccion de la rotacion
+		const FVector End = (Start+RotationAxis*50000.f);	//Creamos la variable de la posicion final del disparo
+
+		//Creamos el rayo, SOLO impactara con objetos visibles
+		GetWorld()->LineTraceSingleByChannel(FireHit, Start, End, ECC_Visibility);
+
+		//Comprobamos si chocó con algo
+		if (FireHit.bBlockingHit)
+		{
+			//Dibujamos una linea (Solo pruebas)
+			DrawDebugLine(GetWorld(),Start, End, FColor::Red,false,2.f);
+			DrawDebugPoint(GetWorld(), FireHit.ImpactPoint, 30, FColor::Red, false, 2.f);
+
+			//Comprobamos que no es nulas las particulas
+			if (ImpactParticles)
+			{
+				//Ejecutamos las particulas
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, FireHit.ImpactPoint);
+			}
+		}
+	}
 }

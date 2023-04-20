@@ -32,4 +32,5 @@ void AShooterHUD::DrawHUD()
 		//dibujamos la textura
 		DrawTexture(CrossTexture, ScreenXSize, ScreenYSize, 64, 64, 0,0,1,1);
 	}
+	
 }
