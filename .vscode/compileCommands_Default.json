@@ -1,0 +1,90 @@
+[
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\PlayerAnimInstance.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\PlayerAnimInstance.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\PlayerCharacter.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\PlayerCharacter.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterHUD.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterHUD.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterUE.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterUE.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterUE.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterUEGameModeBase.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Proyectos\\Unreal\\ShooterUE\\Source\\ShooterUE\\ShooterUEGameModeBase.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Proyectos\\Unreal\\ShooterUE\\.vscode\\compileCommands_Default\\ShooterUE.262.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	}
+]

@@ -188,6 +188,48 @@ void APlayerCharacter::Fire()
 	FireLineCast("Fire_SocketR");
 }
 
+bool APlayerCharacter::GetBeamEndLocation(const FVector& MuzzleSocketLocation, FHitResult& OutHitResult)
+{
+	
+}
+
+bool APlayerCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation)
+{
+	//Variables locales
+	FVector2d ViewPortSize;
+
+	//Verificamos is tiene valor el GameViewPort, ya que estamos trabajando con punteros
+	if (GEngine && GEngine->GameViewport)
+	{
+		//Le damos valor al ViewPortSize, el valor sera el tamano del Viewport
+		GEngine->GameViewport->GetViewportSize(ViewPortSize);
+	}
+
+	//Obtenemos datos sobre la mira de apuntar
+	FVector2d CrosshairLocation2D = FVector2D(ViewPortSize.X/2,ViewPortSize.Y/2);
+	FVector CrosshairWorldLocation;
+	FVector CrosshairWorldDirection;
+
+	//obtenemos las coordenadas para las variables Crosshair
+	bool bScreenToWorld = UGameplayStatics::DeprojectScreenToWorld(
+		UGameplayStatics::GetPlayerController(this,0),
+		CrosshairLocation2D,
+		CrosshairWorldLocation,
+		CrosshairWorldDirection
+	);
+
+	//Comprobamos que se pudo obtener las coordenadas
+	if (bScreenToWorld)
+	{
+		//Creamos el vector de inicio y el final de la posicion del mundo
+		const FVector Start = CrosshairWorldLocation;
+		const FVector End = Start + (CrosshairWorldLocation*50000.f);
+
+		
+	}
+	
+}
+
 void APlayerCharacter::FireLineCast(FName SocketName)
 {
 	//Obtenemos los sockets
@@ -198,6 +240,16 @@ void APlayerCharacter::FireLineCast(FName SocketName)
 		//obtenemos el transform
 		const FTransform Fire_SocketTransform = Fire_Socket->GetSocketTransform(GetMesh());	//Lo obtenemos del esqueleto del personaje
 
+		//Verificamos que exista MuzzlesParticles
+		if (MuzzlesParticles)
+		{
+			//Instanciamos las particulas
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzlesParticles,
+				Fire_SocketTransform.GetLocation());
+			
+		}
+		
+		/*TEST DE DISPARO
 		FHitResult FireHit;	//Guardará la informacion si nuestro disparo impacta con algo
 		const FVector Start = Fire_SocketTransform.GetLocation();	//Obtenemos la posicion de inicio
 		const FQuat Rotation = Fire_SocketTransform.GetRotation();	//Obtenemos la rotacion
@@ -220,6 +272,6 @@ void APlayerCharacter::FireLineCast(FName SocketName)
 				//Ejecutamos las particulas
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, FireHit.ImpactPoint);
 			}
-		}
+		}*/
 	}
 }

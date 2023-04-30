@@ -35,6 +35,9 @@ private:
 	UAnimMontage* FireAnimMontage;	//Variable de animacion
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=FX, meta=(AllowPrivateAccess = "true"))
 	UParticleSystem* ImpactParticles;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=FX, meta=(AllowPrivateAccess = "true"))
+	UParticleSystem* MuzzlesParticles;
+	
 //Si no indicamos si es publica, protected o privada la funcion, por defecto sera privada
 	
 public:
@@ -54,8 +57,11 @@ protected:
 	void LookAtRate(float Rate);
 
 	//Funciones de acciones
-	//Funcion de disparo
+	//Funciones de disparo
 	void Fire();
+	
+	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FHitResult& OutHitResult);
+	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation);
 
 private:
 	void FireLineCast(FName SocketName);
