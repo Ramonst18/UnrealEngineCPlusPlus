@@ -7,6 +7,7 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -40,6 +41,9 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
+
+	//Variables del zoom de la camara
+	CameraZommedFOV = 60.f;
 	
 }//End constructor
 
@@ -48,6 +52,11 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Obtenemos el FOV inicial de la camara, primero comprobando que exista el FollowCamera
+	if (FollowCamera)
+	{
+		CameraDefaultFOV = FollowCamera->FieldOfView;
+	}
 	
 	
 	//variables
@@ -105,6 +114,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	//DISPARO DEL PERSONAJE
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::Fire);	//Click Dispara
+
+	//ZOOM DE LA CAMARA
+	PlayerInputComponent->BindAction("AiminButton",IE_Pressed,this, &APlayerCharacter::AiminButtonPressed);
+	PlayerInputComponent->BindAction("AiminButton",IE_Released,this, &APlayerCharacter::AiminButtonReleased);
+
 }
 
 //FUNCIONES
@@ -190,7 +204,38 @@ void APlayerCharacter::Fire()
 
 bool APlayerCharacter::GetBeamEndLocation(const FVector& MuzzleSocketLocation, FHitResult& OutHitResult)
 {
+	//Crearemos la trayectoria del disparo
+	FVector OutBeamLocation;
+	FHitResult CrosshaitHitResult;
+	bool bCrosshairHit = TraceUnderCrosshairs(CrosshaitHitResult, OutBeamLocation);	//Obtenemos si hubo colision del disparo
+
+	//Comprobamos si hubo colision con el disparo
+	if (bCrosshairHit)
+	{
+		//pasamos la posicion de impacto al OutBeamLocation
+		OutBeamLocation = CrosshaitHitResult.Location;
+	}
 	
+	//DIBUJO DEL TRAZO DE LA TRAYECTORIA DE NUESTRO DISPARO
+	const FVector WeaponTraceStart = MuzzleSocketLocation;
+	const FVector WeaponTraceEnd = OutBeamLocation;
+
+	//lo ponemos en la posicion trazando una segunda linea (solo para asegurarnos)
+	GetWorld()->LineTraceSingleByChannel(
+		OutHitResult,
+		WeaponTraceStart,
+		WeaponTraceEnd,
+		ECollisionChannel::ECC_Visibility
+	);
+
+	//preguntamos si no hay colision
+	if (!OutHitResult.bBlockingHit)
+	{
+		OutHitResult.Location = OutBeamLocation;
+		return false;
+	}
+	
+	return true;
 }
 
 bool APlayerCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation)
@@ -224,10 +269,49 @@ bool APlayerCharacter::TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& O
 		//Creamos el vector de inicio y el final de la posicion del mundo
 		const FVector Start = CrosshairWorldLocation;
 		const FVector End = Start + (CrosshairWorldLocation*50000.f);
+		OutHitLocation = End;
 
+		//Trazamos una linea
+		GetWorld()->LineTraceSingleByChannel(OutHitResult,Start, End, ECollisionChannel::ECC_Visibility);
+
+		//Comprobamos si choca la linea con algo
+		if (OutHitResult.bBlockingHit)
+		{
+			//Cambiamos la posicion del LiceTrace final a la posicion del impacto
+			OutHitLocation = OutHitResult.Location;
+
+			//Si colisiona regresamos el true
+			return true;
+		}
 		
 	}
+
+	//Si no colisionó entonces regresamos un falso
+	return false;
 	
+}
+
+void APlayerCharacter::AiminButtonPressed()
+{
+	bAiming = true;
+
+	//Comprobamos la existencia de la camara
+	if (FollowCamera)
+	{
+		FollowCamera->SetFieldOfView(CameraZommedFOV);
+	}
+	
+}
+
+void APlayerCharacter::AiminButtonReleased()
+{
+	bAiming = false;
+
+	//Comprobamos la existencia de la camara
+	if (FollowCamera)
+	{
+		FollowCamera->SetFieldOfView(CameraDefaultFOV);
+	}
 }
 
 void APlayerCharacter::FireLineCast(FName SocketName)
@@ -247,6 +331,36 @@ void APlayerCharacter::FireLineCast(FName SocketName)
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzlesParticles,
 				Fire_SocketTransform.GetLocation());
 			
+		}
+
+		FHitResult OutHitResult;
+		bool bBeamEnd = GetBeamEndLocation(Fire_SocketTransform.GetLocation(), OutHitResult);
+		
+		//Comprobamos si el LineCast choco con algo
+		if (bBeamEnd)
+		{
+			//comprobamos si existen las particulas de impacto
+			if (ImpactParticles)
+			{
+				//Reproducimos las particulas en el punto de impacto
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, OutHitResult.ImpactPoint);
+			}
+
+			//Verificamos el puntero
+			if (BeamParticles)
+			{
+				//Instanciamos la trayectoria de la bala
+				UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(
+					GetWorld(),
+					BeamParticles, Fire_SocketTransform);
+
+				//Si la instancia se creo entonces
+				if (Beam)
+				{
+					Beam->SetVectorParameter(FName("Target"),OutHitResult.ImpactPoint);
+				}
+				
+			}
 		}
 		
 		/*TEST DE DISPARO

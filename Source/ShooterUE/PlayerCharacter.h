@@ -37,6 +37,15 @@ private:
 	UParticleSystem* ImpactParticles;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=FX, meta=(AllowPrivateAccess = "true"))
 	UParticleSystem* MuzzlesParticles;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=FX, meta=(AllowPrivateAccess = "true"))
+	UParticleSystem* BeamParticles;
+
+	//Variables para el zoom de camara
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess = "true"))
+	bool bAiming;
+
+	float CameraDefaultFOV;
+	float CameraZommedFOV;
 	
 //Si no indicamos si es publica, protected o privada la funcion, por defecto sera privada
 	
@@ -62,6 +71,10 @@ protected:
 	
 	bool GetBeamEndLocation(const FVector& MuzzleSocketLocation, FHitResult& OutHitResult);
 	bool TraceUnderCrosshairs(FHitResult& OutHitResult, FVector& OutHitLocation);
+
+	//Funciones del zoom
+	void AiminButtonPressed();
+	void AiminButtonReleased();
 
 private:
 	void FireLineCast(FName SocketName);
