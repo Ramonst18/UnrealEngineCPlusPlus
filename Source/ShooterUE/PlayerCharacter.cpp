@@ -22,9 +22,9 @@ APlayerCharacter::APlayerCharacter()
 	//variable, se crea un subObjeto Defautl <Tipo del objeto>, El metodo nos pide el nombre que tendra en unreal
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringCamera"));	
 	CameraBoom->SetupAttachment(RootComponent);		//Le asignamos una funcion para atar el componente al RootComponent
-	CameraBoom->TargetArmLength = 300;	//indicamos la distancia entre el springCamera y los objetos que tenga unidos
+	CameraBoom->TargetArmLength = 180;	//indicamos la distancia entre el springCamera y los objetos que tenga unidos
 	CameraBoom->bUsePawnControlRotation = true;	//que rote el spring cuando rote el jugador
-
+	CameraBoom->SocketOffset = FVector(0,50,70);	//Tratando de poner la camara al hombro
 
 	
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -43,7 +43,8 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationRoll = false;
 
 	//Variables del zoom de la camara
-	CameraZommedFOV = 60.f;
+	CameraZommedFOV = 35.f;
+	SpeedZoomed = 20;
 	
 }//End constructor
 
@@ -56,6 +57,7 @@ void APlayerCharacter::BeginPlay()
 	if (FollowCamera)
 	{
 		CameraDefaultFOV = FollowCamera->FieldOfView;
+		CameraCurrentFOV = CameraDefaultFOV;
 	}
 	
 	
@@ -86,7 +88,8 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
+	CameraInterpZoom(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -295,22 +298,30 @@ void APlayerCharacter::AiminButtonPressed()
 {
 	bAiming = true;
 
-	//Comprobamos la existencia de la camara
-	if (FollowCamera)
-	{
-		FollowCamera->SetFieldOfView(CameraZommedFOV);
-	}
-	
 }
 
 void APlayerCharacter::AiminButtonReleased()
 {
 	bAiming = false;
 
-	//Comprobamos la existencia de la camara
+}
+
+void APlayerCharacter::CameraInterpZoom(float DeltaTime)
+{
+	//Comprobamos si el puntero de la camara tiene valor
 	if (FollowCamera)
 	{
-		FollowCamera->SetFieldOfView(CameraDefaultFOV);
+		//Preguntamos si esta apuntando para poder incrementar el zoom del apuntado
+		if (bAiming)
+		{
+			//Incremento en cierta cantidad de tiempo, desde donde hasta donde, cada tiempo con una velocidad de.
+			CameraCurrentFOV = FMath::FInterpTo(CameraCurrentFOV, CameraZommedFOV, DeltaTime, SpeedZoomed);
+		}else{
+			CameraCurrentFOV = FMath::FInterpTo(CameraCurrentFOV, CameraDefaultFOV, DeltaTime, SpeedZoomed);
+		}
+
+		//Pasamos los datos del FOV a la camara
+		FollowCamera->SetFieldOfView(CameraCurrentFOV);
 	}
 }
 

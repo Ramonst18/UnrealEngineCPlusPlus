@@ -46,6 +46,10 @@ private:
 
 	float CameraDefaultFOV;
 	float CameraZommedFOV;
+	float CameraCurrentFOV;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess = "true"))
+	float SpeedZoomed;
 	
 //Si no indicamos si es publica, protected o privada la funcion, por defecto sera privada
 	
@@ -75,6 +79,7 @@ protected:
 	//Funciones del zoom
 	void AiminButtonPressed();
 	void AiminButtonReleased();
+	void CameraInterpZoom(float DeltaTime);
 
 private:
 	void FireLineCast(FName SocketName);
