@@ -93,5 +93,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	//Funcion donde se detecta las teclas y que funciones se realizara
 
+	//GETTERS AND SETTERS
+	bool GetAiming() const{ return bAiming;}
 	
 };

@@ -84,6 +84,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			//guardamos el ultimo movimiento del personaje
 			LastMovementOffSetYaw = MovementOffSetYaw;
 		}
+
+		bAiming = PlayerCharacter->GetAiming();
 	}
 }
 

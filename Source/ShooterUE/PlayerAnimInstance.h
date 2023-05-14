@@ -48,4 +48,7 @@ private:
 	float MovementOffSetYaw;	//Yaw, referencia al eje Z
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement,meta = (AllowPrivateAccess = "true"))
 	float LastMovementOffSetYaw;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement,meta = (AllowPrivateAccess = "true"))
+	bool bAiming;	//Variable para saber si esta apuntando
+
 };
